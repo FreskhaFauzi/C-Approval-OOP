@@ -54,7 +54,6 @@ Menu Message:
         }
         else
         {
-            Console.WriteLine("Input berhasil disimpan.");
             return input;
         }
     }
@@ -162,6 +161,8 @@ Menu Message:
             Subject = subject,
             Isi = message
         });
+
+        Console.WriteLine("Input berhasil disimpan.");
     }
     private void MenuApprovalMessage()
     {
