@@ -1,4 +1,6 @@
-﻿class MenuHandler
+﻿using System.Dynamic;
+
+class MenuHandler
 {
     // const, private, protected, public
 
@@ -64,6 +66,12 @@ Menu Message:
         public string Penerima { get; set; }
         public string Subject { get; set; }
         public string Isi { get; set; }
+        public bool ApprovalStatus { get; set; }
+    }
+
+    public class ApprovalMessage : Message
+    {
+        public bool StatusApproval { get; set; }
     }
     #endregion
 
@@ -159,19 +167,28 @@ Menu Message:
             Pengirim = pengirim,
             Penerima = penerima,
             Subject = subject,
-            Isi = message
+            Isi = message,
         });
 
         Console.WriteLine("Input berhasil disimpan.");
     }
+
     private void MenuApprovalMessage()
     {
-        Console.WriteLine("Menu Approval with Message - Silahkan Isi Data Berikut:");
-        string pengirim = getInput("Masukan Nama Pengirim: ");
-        string penerima = getInput("Masukan Nama Penerima: ");
-        string subject = getInput("Masukan Subject: ");
-        string message = getInput("Masukan Message: ");
-        string status = getInput("Approve (Y/N): ");
+        Console.WriteLine("Menu Message Only - Silahkan Isi Data Berikut:");
+        string pengirim = storeInput(getInput("Masukan Nama Pengirim: "));
+        string penerima = storeInput(getInput("Masukan Nama Penerima: "));
+        string subject = storeInput(getInput("Masukan Nama Subject: "));
+        string message = storeInput(getInput("Masukan Nama Message: "));
+
+        messages.Add(new ApprovalMessage
+        {
+            Pengirim = pengirim,
+            Penerima = penerima,
+            Subject = subject,
+            Isi = message,
+            StatusApproval = false
+        });
     }
     private void MenuApprovalFiles()
     {
@@ -194,7 +211,7 @@ Menu Message:
         int i = 1;
         foreach (var listMessage in messages)
         {
-            Console.WriteLine($"{i}. Pengirim: {listMessage.Pengirim}, Penerima: {listMessage.Penerima}, Subject: {listMessage.Subject}, Isi: {listMessage.Isi}");
+            Console.WriteLine($"{i}. Pengirim: {listMessage.Pengirim}, Penerima: {listMessage.Penerima}, Subject: {listMessage.Subject}, Isi: {listMessage.Isi}, Status Approval: {(listMessage.ApprovalStatus ? "Approved" : "Not Approved")}");
             i++;
         }
     }
