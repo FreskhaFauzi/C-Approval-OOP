@@ -21,13 +21,16 @@ Menu Message:
     #endregion
 
     #region olahInput
+    
+    private List<Message> messages = new List<Message>();
+
     private string? getInput(string message)
-        {
-            Console.Write(message);
-            string? input = string.Empty;
-            input = Console.ReadLine();
-            return input;
-        }
+    {
+        Console.Write(message);
+        string? input = string.Empty;
+        input = Console.ReadLine();
+        return input;
+    }
 
     private int parseInput(string? input)
     {
@@ -41,6 +44,28 @@ Menu Message:
             return -1;
         }
     }
+
+    private string storeInput(string? input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            Console.WriteLine("Input tidak boleh kosong");
+            return getInput("Silakan masukkan input kembali: ");
+        }
+        else
+        {
+            Console.WriteLine("Input berhasil disimpan.");
+            return input;
+        }
+    }
+
+    public class Message
+    {
+        public string Pengirim { get; set; }
+        public string Penerima { get; set; }
+        public string Subject { get; set; }
+        public string Isi { get; set; }
+    }
     #endregion
 
     private void showMainMenu()
@@ -50,21 +75,28 @@ Menu Message:
             Console.WriteLine(MENU_MAIN);
             int pilihan = parseInput(getInput("Masukan Pilihan: "));
 
-            switch (pilihan)
+            try
             {
-                case 1:
-                    showMessageMenu();
-                    break;
-                case 2:
-                    showMessageList();
-                    break;
-                case 3:
-                    Console.WriteLine("Bye :D");
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Pilihan tidak valid, silakan coba lagi.\n");
-                    break;
+                switch (pilihan)
+                {
+                    case 1:
+                        showMessageMenu();
+                        break;
+                    case 2:
+                        showMessageList();
+                        break;
+                    case 3:
+                        Console.WriteLine("Bye :D");
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Pilihan tidak valid, silakan coba lagi.\n");
+                        break;
+                }
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine("Input tidak valid, masukan input kembali");
             }
         }
     }
@@ -76,8 +108,10 @@ Menu Message:
         Console.WriteLine(MENU_MESSAGE);
         bool run = true;
         int pilihan = parseInput(getInput("Masukkan pilihan: "));
-        
-        while (run)
+
+        try
+        {
+            while (run)
         {
             switch (pilihan)
             {
@@ -101,17 +135,33 @@ Menu Message:
                     Environment.Exit(0);
                     break;
                 default:
+                 Console.WriteLine("Pilihan tidak valid, silakan coba lagi.\n");
+                 run = false;
                     break;
             }
         }
+        }
+        catch (FormatException e)
+        {
+            Console.WriteLine("Input tidak valid, masukan input kembali");
+        }
     }
+
     private void MenuMessageOnly()
     {
         Console.WriteLine("Menu Message Only - Silahkan Isi Data Berikut:");
-        string pengirim = getInput("Masukan Nama Pengirim: ");
-        string penerima = getInput("Masukan Nama Penerima: ");
-        string subject = getInput("Masukan Subject: ");
-        string message = getInput("Masukan Message: ");
+        string pengirim = storeInput(getInput("Masukan Nama Pengirim: "));
+        string penerima = storeInput(getInput("Masukan Nama Penerima: "));
+        string subject = storeInput(getInput("Masukan Nama Subject: "));
+        string message = storeInput(getInput("Masukan Nama Message: "));
+
+        messages.Add(new Message
+        {
+            Pengirim = pengirim,
+            Penerima = penerima,
+            Subject = subject,
+            Isi = message
+        });
     }
     private void MenuApprovalMessage()
     {
@@ -138,12 +188,13 @@ Menu Message:
 
     private void showMessageList()
     {
-        int messageCount = 10;
         Console.WriteLine("Message List:");
 
-        for (int i = 1; i <= messageCount; i++)
+        int i = 1;
+        foreach (var listMessage in messages)
         {
-            Console.WriteLine($"{i}. Message From: Pengirim {i} | Subject {i}");
+            Console.WriteLine($"{i}. Pengirim: {listMessage.Pengirim}, Penerima: {listMessage.Penerima}, Subject: {listMessage.Subject}, Isi: {listMessage.Isi}");
+            i++;
         }
     }
 #endregion
