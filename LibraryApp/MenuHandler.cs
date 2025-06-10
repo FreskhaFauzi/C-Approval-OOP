@@ -189,6 +189,7 @@ Menu Message:
             Isi = message,
             StatusApproval = false
         });
+        Console.WriteLine("Input berhasil disimpan.");
     }
     private void MenuApprovalFiles()
     {
@@ -211,7 +212,8 @@ Menu Message:
         int i = 1;
         foreach (var listMessage in messages)
         {
-            Console.WriteLine($"{i}. Pengirim: {listMessage.Pengirim}, Penerima: {listMessage.Penerima}, Subject: {listMessage.Subject}, Isi: {listMessage.Isi}, Status Approval: {(listMessage.ApprovalStatus ? "Approved" : "Not Approved")}");
+            // Console.WriteLine($"{i}. Pengirim: {listMessage.Pengirim}, Penerima: {listMessage.Penerima}, Subject: {listMessage.Subject}, Isi: {listMessage.Isi}, Status Approval: {(listMessage.ApprovalStatus ? "Approved" : "Not Approved")}");
+            Console.WriteLine($"{i}. Pengirim: {listMessage.Pengirim}, Subject: {listMessage.Subject}, Status Approval: {(listMessage.ApprovalStatus ? "Approved" : "Not Approved")}");
             i++;
         }
     }
