@@ -60,18 +60,38 @@ Menu Message:
         }
     }
 
-    public class Message
+    public abstract class Message
     {
         public string Pengirim { get; set; }
         public string Penerima { get; set; }
         public string Subject { get; set; }
         public string Isi { get; set; }
-        public bool ApprovalStatus { get; set; }
+
+        public abstract void DisplayMessage();
     }
 
-    public class ApprovalMessage : Message
+    public abstract class MessageOnly : Message
+    {
+        public override void DisplayMessage()
+        {
+            Console.WriteLine($"Pengirim: {Pengirim}");
+            Console.WriteLine($"Penerima: {Penerima}");
+            Console.WriteLine($"Subject: {Subject}");
+            Console.WriteLine($"Isi: {Isi}");
+        }
+    }
+    public abstract class ApprovalMessage : Message
     {
         public bool StatusApproval { get; set; }
+
+                public override void DisplayMessage()
+        {
+            Console.WriteLine($"Pengirim: {Pengirim}");
+            Console.WriteLine($"Penerima: {Penerima}");
+            Console.WriteLine($"Subject: {Subject}");
+            Console.WriteLine($"Isi: {Isi}");
+            Console.WriteLine($"Status Approval: {(StatusApproval ? "Approved" : "Not Approved")}");
+        }
     }
     #endregion
 
@@ -162,7 +182,7 @@ Menu Message:
         string subject = storeInput(getInput("Masukan Nama Subject: "));
         string message = storeInput(getInput("Masukan Nama Message: "));
 
-        messages.Add(new Message
+        messages.Add(new MessageOnly
         {
             Pengirim = pengirim,
             Penerima = penerima,
@@ -215,6 +235,31 @@ Menu Message:
             // Console.WriteLine($"{i}. Pengirim: {listMessage.Pengirim}, Penerima: {listMessage.Penerima}, Subject: {listMessage.Subject}, Isi: {listMessage.Isi}, Status Approval: {(listMessage.ApprovalStatus ? "Approved" : "Not Approved")}");
             Console.WriteLine($"{i}. Pengirim: {listMessage.Pengirim}, Subject: {listMessage.Subject}, Status Approval: {(listMessage.ApprovalStatus ? "Approved" : "Not Approved")}");
             i++;
+
+            int selected = parseInput(getInput("Pilih Message untuk melihat detail"));
+            try
+            {
+                if (selected < 1 || selected > messages.Count)
+                {
+                    Console.WriteLine("Pilihan tidak valid, silakan coba lagi.");
+                }
+                else
+                {
+                    var selectedMessage = messages[selected - 1];
+                    Console.WriteLine($"Pengirim: {selectedMessage.Pengirim}");
+                    Console.WriteLine($"Penerima: {selectedMessage.Penerima}");
+                    Console.WriteLine($"Subject: {selectedMessage.Subject}");
+                    Console.WriteLine($"Isi: {selectedMessage.Isi}");
+                    if (selectedMessage is ApprovalMessage)
+                    {
+                        
+                    }
+                }
+            }
+            catch
+            {
+                
+            }
         }
     }
 #endregion
